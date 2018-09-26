@@ -1,13 +1,13 @@
 from setuptools import setup
 
-setup(name="tinman",
-      version          = __import__('tinman').__version__,
+setup(name="dpaybot",
+      version          = __import__('dpaybot').__version__,
       description      = "Testnet management scripts.",
-      url              = "https://github.com/steemit/tinman",
-      author           = "Steemit",
-      packages         = ["tinman", "simple_steem_client"],
+      url              = "https://github.com/dpays/dpaybot",
+      author           = "dPay Labs",
+      packages         = ["dpaybot", "simple_dpay_client"],
       install_requires = [],
       entry_points     = {"console_scripts" : [
-                          "tinman=tinman.main:sys_main",
+                          "dpaybot=dpaybot.main:sys_main",
                          ]}
     )

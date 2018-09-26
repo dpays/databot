@@ -38,7 +38,7 @@ commands = collections.OrderedDict((
 
 def main(argv):
     if len(argv) == 0:
-        argv = list(argv) + ["tinman"]
+        argv = list(argv) + ["dpaybot"]
     if len(argv) == 1:
         argv = list(argv) + ["--help"]
     module_name = argv[1]

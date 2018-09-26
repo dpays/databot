@@ -1,4 +1,4 @@
-from simple_steem_client.serializer.operation_variants import operation_variants
+from simple_dpay_client.serializer.operation_variants import operation_variants
 
 import math
 import time
@@ -46,9 +46,9 @@ def twos(v, width):
     return UINT64_MAX-abs_v+1
 
 class Serializer:
-  """Converts dicts and objects into sequences of bytes as required by the STEEM blockchain.
+  """Converts dicts and objects into sequences of bytes as required by the dPay blockchain.
 
-  STEEM uses a custom binary serialization format. All transactions on the blockchain must
+  dPay uses a custom binary serialization format. All transactions on the blockchain must
   be signed, and the signatures must be taken over the binary serialization of the transaction.
 
   Some properties of the serialization format:
@@ -85,10 +85,10 @@ class Serializer:
     return self._write_byte(value)
 
   def uint16(self, value):
-    return self.uint8(value & 0xff) + self.uint8((value >> 8) & 0xff) 
+    return self.uint8(value & 0xff) + self.uint8((value >> 8) & 0xff)
 
   def uint32(self, value):
-    return self.uint16(value & 0xffff) + self.uint16((value >> 16) & 0xffff) 
+    return self.uint16(value & 0xffff) + self.uint16((value >> 16) & 0xffff)
 
   def uint64(self, value):
     return self.uint32(value & 0xffffffff) + self.uint32((value >> 32) & 0xffffffff)
@@ -103,9 +103,9 @@ class Serializer:
     return self.uint32(twos(value, 4))
 
   def int64(self, value):
-    return self.uint64(twos(value, 8)) 
+    return self.uint64(twos(value, 8))
 
-  def binary64(self, value): 
+  def binary64(self, value):
     if math.isinf(value) and value < 0:
       encoded_value = NIF_FLOAT_64
     elif math.isinf(value):
@@ -128,7 +128,7 @@ class Serializer:
     while value > 127:
       self._write_byte(0x80 | (value & 0x7f))
       value = value >> 7
-      count += 1 
+      count += 1
     self._write_byte(value & 0x7f)
     return count + 1
 
@@ -171,10 +171,10 @@ class Serializer:
     for item in value:
       bytes_written += item_serializer(item)
     return bytes_written
-     
+
   def map(self, value, keytype, valuetype):
     """Serializes an object as an FC map.
-  
+
     value can be either a dict or a list of (key, value) 2-tuples. The latter case
     is supported in case the objects for the map are unhashable by Python.
     """
@@ -237,17 +237,17 @@ class Serializer:
     assert(value is None)
     return 0
 
-  _re_amount = re.compile(r"^([0-9]{0,19})[.]([0-9]{0,19}) (STEEM|SBD|VESTS|TESTS|TBD)$")
+  _re_amount = re.compile(r"^([0-9]{0,19})[.]([0-9]{0,19}) (BEX|BBD|VESTS|TESTS|TBD)$")
   _allowed_symbol_prec = set([
-    ("STEEM", 3),
-    ("SBD", 3),
+    ("BEX", 3),
+    ("BBD", 3),
     ("VESTS", 6),
     ("TESTS", 3),
     ("TBD", 3),
     ])
 
   def asset(self, value):
-    # new asset JSON form as list, see https://github.com/steemit/steem/issues/1937
+    # new asset JSON form as list, see https://github.com/dpays/dpay/issues/1937
 
     assert(type(value) == str)
 
@@ -299,7 +299,7 @@ class Serializer:
     return self.fields(value, (
       ( "account_creation_fee", "asset" ),
       ( "maximum_block_size", "uint32" ),
-      ( "sbd_interest_rate", "uint16" )
+      ( "bbd_interest_rate", "uint16" )
     ))
 
   def operation(self, value):
@@ -325,7 +325,7 @@ class Serializer:
 
   def flush(self):
     """Returns the serializer's output and resets the serializer.
-    
+
     This method allocates a new `bytes` object. If you wish to manage memory directly
     you may prefer `flush_into`.
 
@@ -335,14 +335,13 @@ class Serializer:
     result = bytes(self._data[0:self._pos])
     self._pos = 0
     return result
-  
+
   def flush_into(self, ba, offset=0):
     """Writes the serializer's output into `ba` and resets the serializer.
 
     Args:
       ba (bytearray): The buffer to write the serializer's output into.
-      offset (int): The offset at which to start writing into `ba`. 
+      offset (int): The offset at which to start writing into `ba`.
     """
     ba[offset:self._pos] = self._data[out_offset:self._pos]
     self._pos = 0
-

@@ -1,5 +1,5 @@
 
-# Simple Steem client using urllib
+# Simple dPay client using urllib
 
 import collections
 import json
@@ -10,25 +10,25 @@ import sys
 import urllib.error
 import urllib.request
 
-class SteemException(Exception):
+class DPayException(Exception):
     pass
 
-class SteemRPCException(SteemException):
+class DPayRPCException(DPayException):
     # Remote end returned error
     pass
 
-class SteemHTTPError(SteemException):
+class DPayHTTPError(DPayException):
     # HTTP error code
     pass
 
-class SteemNetworkError(SteemException):
+class DPayNetworkError(DPayException):
     pass
 
-class SteemIllegalArgument(SteemException):
+class DPayIllegalArgument(DPayException):
     # Buggy code in the caller is incorrectly using the provided API
     pass
 
-class SteemRemoteBackend(object):
+class DPayRemoteBackend(object):
     """
     Implement the rpc_call() method which actually submits
     parameters to a remote node.
@@ -50,7 +50,7 @@ class SteemRemoteBackend(object):
        json_decoder=None,
        ):
         """
-        :param nodes:  List of Steem nodes to connect to
+        :param nodes:  List of DPay nodes to connect to
         :param urlopen:  Function used to load remote URL,
         urllib.request.urlopen is used if this parameter None or unspecified
         :param urlopen_args:  List of extra positional arguments to pass to the urlopen function
@@ -114,14 +114,14 @@ class SteemRemoteBackend(object):
         ):
 
         if (method_args is not None) and (method_kwargs is not None):
-            raise SteemIllegalArgument("Attempt to mix positional and keyword arguments")
+            raise DPayIllegalArgument("Attempt to mix positional and keyword arguments")
         if self.appbase and (method_args is not None):
-            raise SteemIllegalArgument("Post-appbase cannot specify args")
+            raise DPayIllegalArgument("Post-appbase cannot specify args")
         if (not self.appbase) and (method_kwargs is not None):
-            raise SteemIllegalArgument("Pre-appbase cannot specify kwargs")
+            raise DPayIllegalArgument("Pre-appbase cannot specify kwargs")
 
         if len(self.nodes) == 0:
-            raise SteemIllegalArgument("Must specify at least one node")
+            raise DPayIllegalArgument("Must specify at least one node")
 
         if self.appbase:
             if method_kwargs is None:
@@ -170,16 +170,16 @@ class SteemRemoteBackend(object):
                     timeout = min(timeout + self.timeout_backoff, self.max_timeout)
                     continue
                 if isinstance(exc, urllib.error.HTTPError):
-                    raise SteemHTTPError(exc)
-                raise SteemNetworkError(exc)
+                    raise DPayHTTPError(exc)
+                raise DPayNetworkError(exc)
             logging.info("resp: %s", resp_bytes)
             resp_json = resp_bytes.decode("utf-8")
             resp = self.json_decoder.decode(resp_json)
             if "error" in resp:
-                raise SteemRPCException(resp)
+                raise DPayRPCException(resp)
             return resp["result"]
 
-class SteemInterface(object):
+class DPayInterface(object):
     """
     Provide syntax to dynamically bind methods to a backend.
     """
@@ -190,7 +190,7 @@ class SteemInterface(object):
 
     def __getattr__(self, item):
         if item.endswith("_api"):
-            return SteemInterface.Api(api_name=item, backend=self.backend)
+            return DPayInterface.Api(api_name=item, backend=self.backend)
         raise AttributeError("Unknown attribute {!r}".format(item))
 
     class Api(object):
@@ -200,7 +200,7 @@ class SteemInterface(object):
             return
 
         def __getattr__(self, item):
-            return SteemInterface.Method(
+            return DPayInterface.Method(
                api_name=self.api_name,
                method_name=item,
                backend=self.backend,

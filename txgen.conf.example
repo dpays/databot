@@ -47,17 +47,17 @@
    "vesting" : {"amount" : "1000000", "precision" : 3, "nai" : "@@000000021"}
   },
 
-  "STEEM_MINER_ACCOUNT" :
+  "DPAY_MINER_ACCOUNT" :
   {
    "name" : "miners"
   },
 
-  "STEEM_NULL_ACCOUNT" :
+  "DPAY_NULL_ACCOUNT" :
   {
    "name" : "null"
   },
 
-  "STEEM_TEMP_ACCOUNT" :
+  "DPAY_TEMP_ACCOUNT" :
   {
    "name" : "temp"
   }

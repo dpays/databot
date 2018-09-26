@@ -1,3 +1,3 @@
-[submodule "tinman/simple_steem_client"]
-	path = tinman/simple_steem_client
-	url = https://github.com/steemit/simple_steem_client.git
+[submodule "dpaybot/simple_dpay_client"]
+	path = dpaybot/simple_dpay_client
+	url = https://github.com/dpays/simple_dpay_client.git

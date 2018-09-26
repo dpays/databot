@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from simple_steem_client.client import SteemRemoteBackend, SteemInterface
+from simple_dpay_client.client import DPayRemoteBackend, DPayInterface
 
 from binascii import hexlify, unhexlify
 
@@ -35,10 +35,10 @@ class TransactionSigner(object):
         return json.loads(line)
 
 class CachedDgpo(object):
-    def __init__(self, timefunc=time.time, refresh_interval=1.0, steemd=None):
+    def __init__(self, timefunc=time.time, refresh_interval=1.0, dpayd=None):
         self.timefunc = timefunc
         self.refresh_interval = refresh_interval
-        self.steemd = steemd
+        self.dpayd = dpayd
 
         self.dgpo = None
         self.last_refresh = self.timefunc()
@@ -53,7 +53,7 @@ class CachedDgpo(object):
         if (now - self.last_refresh) > self.refresh_interval:
             self.reset()
         if self.dgpo is None:
-            self.dgpo = self.steemd.database_api.get_dynamic_global_properties(a=None)
+            self.dgpo = self.dpayd.database_api.get_dynamic_global_properties(a=None)
             self.last_refresh = now
         return self.dgpo
 
@@ -64,14 +64,14 @@ def wait_for_real_time(when):
             break
         time.sleep(0.4)
 
-def generate_blocks(steemd, args, cached_dgpo=None, now=None, produce_realtime=False):
+def generate_blocks(dpayd, args, cached_dgpo=None, now=None, produce_realtime=False):
     if args["count"] <= 0:
         return
 
     miss_blocks = args.get("miss_blocks", 0)
 
     if not produce_realtime:
-        steemd.debug_node_api.debug_generate_blocks(
+        dpayd.debug_node_api.debug_generate_blocks(
             debug_key="5JNHfZYKGaomSFvd4NUdQ9qMcEAC43kujbfjueTHpVapX1Kzq2n",
             count=args["count"],
             skip=0,
@@ -88,7 +88,7 @@ def generate_blocks(steemd, args, cached_dgpo=None, now=None, produce_realtime=F
     print("wait_for_real_time( {} )".format(next_time))
     wait_for_real_time(next_time)
     print("calling debug_generate_blocks, miss_blocks={}".format(miss_blocks))
-    steemd.debug_node_api.debug_generate_blocks(
+    dpayd.debug_node_api.debug_generate_blocks(
            debug_key="5JNHfZYKGaomSFvd4NUdQ9qMcEAC43kujbfjueTHpVapX1Kzq2n",
            count=1,
            skip=0,
@@ -99,7 +99,7 @@ def generate_blocks(steemd, args, cached_dgpo=None, now=None, produce_realtime=F
     for i in range(1, args["count"]):
         next_time += datetime.timedelta(seconds=3)
         wait_for_real_time(next_time)
-        steemd.debug_node_api.debug_generate_blocks(
+        dpayd.debug_node_api.debug_generate_blocks(
                debug_key="5JNHfZYKGaomSFvd4NUdQ9qMcEAC43kujbfjueTHpVapX1Kzq2n",
                count=1,
                skip=0,
@@ -110,8 +110,8 @@ def generate_blocks(steemd, args, cached_dgpo=None, now=None, produce_realtime=F
 
 def main(argv):
 
-    parser = argparse.ArgumentParser(prog=argv[0], description="Submit transactions to Steem")
-    parser.add_argument("-t", "--testserver", default="http://127.0.0.1:8190", dest="testserver", metavar="URL", help="Specify testnet steemd server with debug enabled")
+    parser = argparse.ArgumentParser(prog=argv[0], description="Submit transactions to dPay")
+    parser.add_argument("-t", "--testserver", default="https://d.djackson.network", dest="testserver", metavar="URL", help="Specify testnet dpayd server with debug enabled")
     parser.add_argument("--signer", default="sign_transaction", dest="sign_transaction_exe", metavar="FILE", help="Specify path to sign_transaction tool")
     parser.add_argument("-i", "--input-file", default="-", dest="input_file", metavar="FILE", help="File to read transactions from")
     parser.add_argument("-f", "--fail-file", default="-", dest="fail_file", metavar="FILE", help="File to write failures, - for stdout, die to quit on failure")
@@ -137,12 +137,12 @@ def main(argv):
 
     timeout = args.timeout
 
-    backend = SteemRemoteBackend(nodes=[args.testserver], appbase=True, min_timeout=timeout, max_timeout=timeout)
-    steemd = SteemInterface(backend)
+    backend = DPayRemoteBackend(nodes=[args.testserver], appbase=True, min_timeout=timeout, max_timeout=timeout)
+    dpayd = DPayInterface(backend)
     sign_transaction_exe = args.sign_transaction_exe
     produce_realtime = args.realtime
 
-    cached_dgpo = CachedDgpo(steemd=steemd)
+    cached_dgpo = CachedDgpo(dpayd=dpayd)
 
     if args.chain_name != "":
         chain_id = hashlib.sha256(str.encode(args.chain_name.strip())).digest().hex()
@@ -164,7 +164,7 @@ def main(argv):
                 metadata = args
                 print("metadata:", metadata)
             elif cmd == "wait_blocks":
-                generate_blocks(steemd, args, cached_dgpo=cached_dgpo, produce_realtime=produce_realtime)
+                generate_blocks(dpayd, args, cached_dgpo=cached_dgpo, produce_realtime=produce_realtime)
                 cached_dgpo.reset()
             elif cmd == "submit_transaction":
                 tx = args["tx"]
@@ -191,7 +191,7 @@ def main(argv):
                 tx["signatures"] = sigs
                 print("bcast:", json.dumps(tx, separators=(",", ":")))
 
-                steemd.network_broadcast_api.broadcast_transaction(trx=tx)
+                dpayd.network_broadcast_api.broadcast_transaction(trx=tx)
         except Exception as e:
             fail_file.write(json.dumps([cmd, args, str(e)])+"\n")
             fail_file.flush()

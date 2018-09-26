@@ -9,7 +9,7 @@ from . import util
 
 def build_account_tx(account, keydb, silent=True):
     name = account["name"]
-    
+
     return {"operations" : [{"type" : "account_create_operation", "value" : {
         "fee" : account["vesting"],
         "creator" : account["creator"],
@@ -21,18 +21,18 @@ def build_account_tx(account, keydb, silent=True):
         "json_metadata" : "",
        }}],
        "wif_sigs" : [keydb.get_privkey(account["creator"])]}
-    
+
 def build_actions(conf, silent=True):
     keydb = prockey.ProceduralKeyDatabase()
     accounts = conf["accounts"]
-    
+
     for account in accounts:
       yield ["submit_transaction", {"tx" : build_account_tx(account, keydb, silent)}]
-    
+
     return
 
 def main(argv):
-    parser = argparse.ArgumentParser(prog=argv[0], description="Generate durable objects for Steem testnet")
+    parser = argparse.ArgumentParser(prog=argv[0], description="Generate durable objects for dPay testnet")
     parser.add_argument("-c", "--conffile", default="durables.conf", dest="conffile", metavar="FILE", help="Specify configuration file")
     parser.add_argument("-o", "--outfile", default="-", dest="outfile", metavar="FILE", help="Specify output file, - means stdout")
     args = parser.parse_args(argv[1:])

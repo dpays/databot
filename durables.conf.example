@@ -3,107 +3,107 @@
     {
       "name": "tn-one",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-two",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-three",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-four",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-five",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-six",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-seven",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-eight",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-adama",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-starbuck",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-baltar",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-boxey",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-boomer",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-apolo",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-hotdog",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-showboat",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-athena",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-racetrack",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-narcho",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-skulls",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-hex",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-husker",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-bulldog",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-chuckles",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-flattop",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }, {
       "name": "tn-beano",
       "vesting": {"amount": "250000000", "precision": 3, "nai": "@@000000021"},
-      "creator": "initminer"
+      "creator": "dpay"
     }
   ]
 }
